@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zl.sp.persistence.mapper.UserMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.zl.sp.persistence.entity.User">
+		<id column="user_id" property="userId" />
+		<result column="user_name" property="userName" />
+		<result column="user_gender" property="userGender" />
+		<result column="user_age" property="userAge" />
+		<result column="user_password" property="userPassword" />
+		<result column="user_address" property="userAddress" />
+		<result column="user_email" property="userEmail" />
+		<result column="user_full_name" property="userFullName" />
+	</resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        user_id AS userId, user_name AS userName, user_gender AS userGender, user_age AS userAge, user_password AS userPassword, user_address AS userAddress, user_email AS userEmail, user_full_name AS userFullName
+    </sql>
+
+</mapper>

@@ -1,0 +1,16 @@
+package ${model};
+
+import com.zl.sp.common.MyPage;
+import java.io.Serializable;
+
+/**
+ * <p>
+ * $!{table.comment} 业务对象  ${modelName}
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+public class ${modelName} extends MyPage implements Serializable {
+	private static final long serialVersionUID = 1L;
+}
