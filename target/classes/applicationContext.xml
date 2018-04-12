@@ -10,8 +10,7 @@
 	<!-- spring的配置文件，主要配置和业务逻辑有关的 -->
 	<!-- 核心点：数据源，与Mybatis的整合，事务控制 -->
 
-	<context:component-scan base-package="com.zl.sp"
-		use-default-filters="false">
+	<context:component-scan base-package="com.zl.sp">
 		<context:exclude-filter type="annotation"
 			expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
@@ -25,51 +24,118 @@
 		<property name="user" value="${jdbc.user}"></property>
 		<property name="password" value="${jdbc.password}"></property>
 	</bean>
-	<!-- ============================================================================ -->
+	<!-- ============================================================================= -->
+	<!-- ======================配置与Mybatis-plus的整合================================== -->
+	<bean id="sqlSessionFactory"
+		class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
+		<!-- 指定数据源 -->
+		<property name="dataSource" ref="pooledDataSource" />
 
-	<!-- ======================配置与Mybatis的整合===================================== -->
-	<bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<!-- 指定Mybatis的全局配置文件的位置 -->
-		<property name="configLocation" value="classpath:mybatis-config.xml"></property>
-		<property name="dataSource" ref="pooledDataSource"></property>
-		<!-- 指定Mybatis mapper文件位置 -->
-		<property name="mapperLocations" value="classpath:mapper/*.xml"></property>
+		<!-- 配置实体扫描路径，多个package可以用分号; 逗号, 分隔， 支持通配符* -->
+		<!-- com.a.b.entity;com.a.c.entity;com.d.*.entity -->
+		<property name="typeAliasesPackage" value="com.zl.sp.entity" />
+
+		<property name="configuration" ref="mybatisConfig" />
+
+		<!-- MP 全局配置注入 -->
+		<property name="globalConfig" ref="globalConfig" />
+
+		<!-- 插件list -->
+		<property name="plugins">
+			<array>
+				<!-- 分页插件配置 -->
+				<bean id="paginationInterceptor"
+					class="com.baomidou.mybatisplus.plugins.PaginationInterceptor" />
+				<!-- 乐观锁插件 -->
+				<bean id="optimisticLockerInterceptor"
+					class="com.baomidou.mybatisplus.plugins.OptimisticLockerInterceptor">
+				</bean>
+				<!-- 性能拦截器，兼打印sql，不建议生产环境配置 -->
+				<bean id="performanceInterceptor"
+					class="com.baomidou.mybatisplus.plugins.PerformanceInterceptor" />
+			</array>
+		</property>
 	</bean>
 
-	<!-- 配置扫描器，将Mybatis接口的实现加入到IOC容器中 -->
-	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<!-- 扫描所有DAO接口的实现加入到IOC容器 -->
-		<property name="basePackage" value="com.zl.sp.dao"></property>
+	<bean id="mybatisConfig" class="com.baomidou.mybatisplus.MybatisConfiguration">
+		<property name="mapUnderscoreToCamelCase" value="true" />
 	</bean>
-	<!-- ============================================================================ -->
+	
+	<!-- 扫描basePackage下所有以@MyBatisDao注解的接口 -->
+	<bean id="confMapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+		<property name="basePackage" value="com.zl.sp" />
+		<property name="annotationClass" value="com.zl.sp.common.MyBatisDao" />
+	</bean>
 
-	<!-- =======================事务控制的配置======================================== -->
-	<bean id="transactionManager"
+	<!-- 定义 MP 全局策略 -->
+	<bean id="globalConfig" class="com.baomidou.mybatisplus.entity.GlobalConfiguration">
+		<!-- 逻辑删除 定义下面3个参数 -->
+		<property name="sqlInjector" ref="logicSqlInjector" />
+		<property name="logicDeleteValue" value="-1" />
+		<property name="logicNotDeleteValue" value="1" />
+		<!-- 全局ID类型： 0, "数据库ID自增"， 1, "用户输入ID", 2, "全局唯一ID", 3, "全局唯一ID" -->
+		<property name="idType" value="0" />
+		<!-- 2.1-gamma+ 数据库自动识别，无需配置数据库类型 -->
+		<property name="dbType" value="mysql" />
+
+		<!-- 全局表为下划线命名设置 true -->
+		<property name="dbColumnUnderline" value="true" />
+
+		<!-- 公共字段填充处理器 -->
+		<!-- <property name="metaObjectHandler" ref="myMetaObjectHandler" /> -->
+		<!--数据库关键字转义符，'desc', "desc" 2.1-gamma+不需要制定 -->
+		<!--<property name="identifierQuote" value="'" /> -->
+	</bean>
+
+	<!-- 自定义处理器 -->
+	<!-- <bean id="myMetaObjectHandler" class="com.baomidou.mybatisplus.mapper.MetaObjectHandler" 
+		abstract="true"/> -->
+	<!-- 逻辑删除Sql注入器 -->
+	<bean id="logicSqlInjector" class="com.baomidou.mybatisplus.mapper.LogicSqlInjector" />
+
+	<!-- 配置mybatis 扫描mapper接口的路径, 相当于注解@MapperScan，@MapperScan("com.baomidou.mybatisplus.test.h2.entity.mapper") -->
+	<bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.zl.sp.mapper" />
+	</bean>
+	<!-- ======================配置与Mybatis-plus的整合 end================================= -->
+
+	<!-- 配置事务管理 -->
+	<bean name="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<!-- 控制住数据源 -->
-		<property name="dataSource" ref="pooledDataSource"></property>
+		<property name="dataSource" ref="pooledDataSource" />
 	</bean>
-	<!-- 开启基于注解的或者是基于xml配置的事务（一般使用配置式的注解） -->
-	<aop:config>
-		<!-- 切入点表达式 -->
-		<aop:pointcut expression="execution(* com.zl.sp.service..*(..))"
-			id="txPoint" />
-		<!-- 配置事务增强 -->
-		<aop:advisor advice-ref="txAdvice" pointcut-ref="txPoint" />
-	</aop:config>
-	<!-- 配置事务如何切入，增强 -->
-	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+
+	<!-- 事务管理 属性 -->
+	<tx:advice id="transactionAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
-			<!-- 所有方法都是事务方法 -->
-			<tx:method name="*" />
-			<!-- 所有以"get"开头的方法都是事务方法 -->
-			<tx:method name="get*" read-only="true" />
+			<tx:method name="add*" propagation="REQUIRED" />
+			<tx:method name="append*" propagation="REQUIRED" />
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="modify*" propagation="REQUIRED" />
+			<tx:method name="edit*" propagation="REQUIRED" />
+			<tx:method name="insert*" propagation="REQUIRED" />
+			<tx:method name="delete*" propagation="REQUIRED" />
+			<tx:method name="remove*" propagation="REQUIRED" />
+			<tx:method name="repair" propagation="REQUIRED" />
+
+			<tx:method name="get*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="find*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="load*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="search*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="datagrid*" propagation="REQUIRED"
+				read-only="true" />
+
+			<tx:method name="*" propagation="REQUIRED" read-only="true" />
 		</tx:attributes>
 	</tx:advice>
-	<!-- 配置一个可以批量的sqlSession -->
-	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactoryBean"></constructor-arg>
-		<constructor-arg name="executorType" value="BATCH"></constructor-arg>
-	</bean>
-	<!-- ============================================================================ -->
+
+	<!-- 配置切面 -->
+	<aop:config>
+		<aop:pointcut id="transactionPointcut"
+			expression="execution(* com.baomidou.springmvc.service..*.*(..))" />
+		<aop:advisor pointcut-ref="transactionPointcut"
+			advice-ref="transactionAdvice" />
+	</aop:config>
 </beans>
