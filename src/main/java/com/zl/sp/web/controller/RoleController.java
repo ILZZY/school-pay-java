@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.wordnik.swagger.annotations.Api;
 import com.zl.sp.service.IRoleService;
@@ -26,6 +27,7 @@ import com.zl.sp.common.Tip;
 import com.zl.sp.common.PageFactory;
 import com.zl.sp.common.CommonMessage;
 import com.zl.sp.persistence.entity.Role;
+import com.zl.sp.persistence.entity.User;
 import com.zl.sp.model.RoleBO;
 /**
  * <p>
@@ -33,7 +35,7 @@ import com.zl.sp.model.RoleBO;
  * </p>
  *
  * @author zhangliang
- * @since 2018-04-05
+ * @since 2018-04-17
  */
 @Api(value="/role")
 @RestController
@@ -84,7 +86,14 @@ public class RoleController extends BaseController {
 
     @PostMapping(produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Tip save(@RequestBody RoleBO param) {		
-		
+    	Role role = new Role();
+    	role.setRoleName(param.getRoleName());
+		Wrapper<Role> userWrapper = SpTools.createEntityWrapper(role);
+		role = service.selectOne(userWrapper );
+    	if(SpTools.isNotEmpty(role)) {
+    		//重名
+    		return fail("数据库中已存在该项");
+    	}
 		//将BO转换为entity对象
 	    Role entity = BeanMapper.map(param, Role.class);
 		service.insert(entity);

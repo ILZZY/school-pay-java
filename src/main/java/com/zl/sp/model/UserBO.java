@@ -50,6 +50,12 @@ public class UserBO extends MyPage implements Serializable {
 	@TableField("user_full_name")
 	private String userFullName;
 	
+	/**
+     * 用户角色id
+     */
+	@TableField("user_role_id")
+	private Integer userRoleId;
+	
 	public Integer getUserId() {
 		return userId;
 	}
@@ -97,6 +103,12 @@ public class UserBO extends MyPage implements Serializable {
 	}
 	public void setUserFullName(String userFullName) {
 		this.userFullName = userFullName;
+	}
+	public Integer getUserRoleId() {
+		return userRoleId;
+	}
+	public void setUserRoleId(Integer userRoleId) {
+		this.userRoleId = userRoleId;
 	}
 	
 	

@@ -2,7 +2,6 @@ package com.zl.sp.persistence.entity;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
-import java.util.Date;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
@@ -14,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zhangliang
- * @since 2018-04-05
+ * @since 2018-04-24
  */
 @TableName("sp_role")
 public class Role extends Model<Role> {
@@ -32,10 +31,15 @@ public class Role extends Model<Role> {
 	@TableField("role_name")
 	private String roleName;
     /**
-     * 角色生成时间
+     * 角色描述
      */
-	@TableField("role_generate_time")
-	private Date roleGenerateTime;
+	@TableField("role_desc")
+	private String roleDesc;
+    /**
+     * 角色对应的资源
+     */
+	@TableField("role_resources")
+	private String roleResources;
 
 
 	public Integer getRoleId() {
@@ -54,12 +58,20 @@ public class Role extends Model<Role> {
 		this.roleName = roleName;
 	}
 
-	public Date getRoleGenerateTime() {
-		return roleGenerateTime;
+	public String getRoleDesc() {
+		return roleDesc;
 	}
 
-	public void setRoleGenerateTime(Date roleGenerateTime) {
-		this.roleGenerateTime = roleGenerateTime;
+	public void setRoleDesc(String roleDesc) {
+		this.roleDesc = roleDesc;
+	}
+
+	public String getRoleResources() {
+		return roleResources;
+	}
+
+	public void setRoleResources(String roleResources) {
+		this.roleResources = roleResources;
 	}
 
 	@Override
@@ -72,7 +84,8 @@ public class Role extends Model<Role> {
 		return "Role{" +
 			", roleId=" + roleId +
 			", roleName=" + roleName +
-			", roleGenerateTime=" + roleGenerateTime +
+			", roleDesc=" + roleDesc +
+			", roleResources=" + roleResources +
 			"}";
 	}
 }

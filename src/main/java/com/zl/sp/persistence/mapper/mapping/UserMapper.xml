@@ -12,11 +12,12 @@
 		<result column="user_address" property="userAddress" />
 		<result column="user_email" property="userEmail" />
 		<result column="user_full_name" property="userFullName" />
+		<result column="user_role_id" property="userRoleId" />
 	</resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        user_id AS userId, user_name AS userName, user_gender AS userGender, user_age AS userAge, user_password AS userPassword, user_address AS userAddress, user_email AS userEmail, user_full_name AS userFullName
+        user_id AS userId, user_name AS userName, user_gender AS userGender, user_age AS userAge, user_password AS userPassword, user_address AS userAddress, user_email AS userEmail, user_full_name AS userFullName, user_role_id AS userRoleId
     </sql>
 
 </mapper>

@@ -13,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zhangliang
- * @since 2018-04-12
+ * @since 2018-04-24
  */
 @TableName("sp_user")
 public class User extends Model<User> {
@@ -48,6 +48,11 @@ public class User extends Model<User> {
 	private String userEmail;
 	@TableField("user_full_name")
 	private String userFullName;
+    /**
+     * 用户角色id
+     */
+	@TableField("user_role_id")
+	private Integer userRoleId;
 
 
 	public Integer getUserId() {
@@ -114,6 +119,14 @@ public class User extends Model<User> {
 		this.userFullName = userFullName;
 	}
 
+	public Integer getUserRoleId() {
+		return userRoleId;
+	}
+
+	public void setUserRoleId(Integer userRoleId) {
+		this.userRoleId = userRoleId;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.userId;
@@ -130,6 +143,7 @@ public class User extends Model<User> {
 			", userAddress=" + userAddress +
 			", userEmail=" + userEmail +
 			", userFullName=" + userFullName +
+			", userRoleId=" + userRoleId +
 			"}";
 	}
 }

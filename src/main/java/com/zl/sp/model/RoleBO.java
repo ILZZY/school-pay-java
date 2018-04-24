@@ -12,10 +12,11 @@ import java.io.Serializable;
  * </p>
  *
  * @author zhangliang
- * @since 2018-04-05
+ * @since 2018-04-24
  */
 public class RoleBO extends MyPage implements Serializable {
 	private static final long serialVersionUID = 1L;
+	
 	/**
      * 角色id
      */
@@ -26,6 +27,16 @@ public class RoleBO extends MyPage implements Serializable {
      */
 	@TableField("role_name")
 	private String roleName;
+    /**
+     * 角色描述
+     */
+	@TableField("role_desc")
+	private String roleDesc;
+    /**
+     * 角色对应的资源
+     */
+	@TableField("role_resources")
+	private String roleResources;
 	public Integer getRoleId() {
 		return roleId;
 	}
@@ -38,6 +49,19 @@ public class RoleBO extends MyPage implements Serializable {
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
 	}
+	public String getRoleDesc() {
+		return roleDesc;
+	}
+	public void setRoleDesc(String roleDesc) {
+		this.roleDesc = roleDesc;
+	}
+	public String getRoleResources() {
+		return roleResources;
+	}
+	public void setRoleResources(String roleResources) {
+		this.roleResources = roleResources;
+	}
+	
 	
 	
 }

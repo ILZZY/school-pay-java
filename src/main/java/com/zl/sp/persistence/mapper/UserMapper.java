@@ -10,7 +10,7 @@ import com.zl.sp.common.MyBatisDao;
  * </p>
  *
  * @author zhangliang
- * @since 2018-04-12
+ * @since 2018-04-24
  */
  @MyBatisDao
 public interface UserMapper extends BaseMapper<User> {

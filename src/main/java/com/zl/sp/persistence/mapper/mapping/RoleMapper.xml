@@ -6,12 +6,13 @@
 	<resultMap id="BaseResultMap" type="com.zl.sp.persistence.entity.Role">
 		<id column="role_id" property="roleId" />
 		<result column="role_name" property="roleName" />
-		<result column="role_generate_time" property="roleGenerateTime" />
+		<result column="role_desc" property="roleDesc" />
+		<result column="role_resources" property="roleResources" />
 	</resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        role_id AS roleId, role_name AS roleName, role_generate_time AS roleGenerateTime
+        role_id AS roleId, role_name AS roleName, role_desc AS roleDesc, role_resources AS roleResources
     </sql>
 
 </mapper>

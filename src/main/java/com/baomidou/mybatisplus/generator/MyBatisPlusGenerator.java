@@ -38,21 +38,21 @@ public class MyBatisPlusGenerator {
     //代码输出目录
     public static final String OUTPUT_PATH = OUT_PATH;    
     //业务表名
-    public static final String TABLE_NAME = "sp_order";
+    public static final String TABLE_NAME = "sp_resource";
     //模块包名（组成包名）
     public static final String MODULE_PACKAGE_NAME = "sp";
     //逻辑删除字段名称
     public static final String LOGIC_DELETE_FIELD_NAME = "";
     //生成的URI资源路径
-    public static final String URI_PATH= "/order"; 
+    public static final String URI_PATH= "/resource"; 
     //是否继承实体bean父类
     public static boolean IS_BASE_ENTITY = false;
     //是否生成service
-    public static boolean IS_SERVICE = true;
+    public static boolean IS_SERVICE = false;
     //是否生成controller
-    public static boolean IS_CONTROLLER = true;
+    public static boolean IS_CONTROLLER = false;
     //是否生成业务对象模型
-    public static boolean IS_MODLE = true;
+    public static boolean IS_MODLE = false;
     //业务对象模型名称,默认为 实体名+BO,例如:AdminBO
     public static String MODLE_NAME = "";
     //是否覆盖已存在文件
