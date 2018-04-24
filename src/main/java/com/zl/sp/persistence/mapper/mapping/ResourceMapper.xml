@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zl.sp.persistence.mapper.ResourceMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.zl.sp.persistence.entity.Resource">
+		<id column="resource_id" property="resourceId" />
+		<result column="resource_name" property="resourceName" />
+		<result column="resource_pid" property="resourcePid" />
+		<result column="resource_path" property="resourcePath" />
+	</resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        resource_id AS resourceId, resource_name AS resourceName, resource_pid AS resourcePid, resource_path AS resourcePath
+    </sql>
+
+</mapper>

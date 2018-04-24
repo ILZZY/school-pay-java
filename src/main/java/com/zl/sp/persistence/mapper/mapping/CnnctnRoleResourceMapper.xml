@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zl.sp.persistence.mapper.CnnctnRoleResourceMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.zl.sp.persistence.entity.CnnctnRoleResource">
+		<id column="cnnctn_id" property="cnnctnId" />
+		<result column="cnnctn_role_id" property="cnnctnRoleId" />
+		<result column="cnnctn_resource_id" property="cnnctnResourceId" />
+	</resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        cnnctn_id AS cnnctnId, cnnctn_role_id AS cnnctnRoleId, cnnctn_resource_id AS cnnctnResourceId
+    </sql>
+
+</mapper>
